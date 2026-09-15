@@ -1,0 +1,344 @@
+{
+  "cybershield_backup_20260912_065810.db": {
+    "filename": "cybershield_backup_20260912_065810.db",
+    "size_bytes": 1929216,
+    "created_at": "2026-09-12T06:58:10.685895+00:00",
+    "checksum_sha256": "988e4049cdecca070b57a03043d9e632c14bb7522c1b3d7d51f3cd90b729be24",
+    "is_verified": true,
+    "note": "Initial verification backup",
+    "actor_id": "cli-admin"
+  },
+  "cybershield_backup_20260912_070004.db": {
+    "filename": "cybershield_backup_20260912_070004.db",
+    "size_bytes": 1929216,
+    "created_at": "2026-09-12T07:00:04.646963+00:00",
+    "checksum_sha256": "988e4049cdecca070b57a03043d9e632c14bb7522c1b3d7d51f3cd90b729be24",
+    "is_verified": true,
+    "note": "Test CI Snapshot",
+    "actor_id": "ci-test"
+  },
+  "cybershield_backup_20260912_070031.db": {
+    "filename": "cybershield_backup_20260912_070031.db",
+    "size_bytes": 1929216,
+    "created_at": "2026-09-12T07:00:31.520326+00:00",
+    "checksum_sha256": "988e4049cdecca070b57a03043d9e632c14bb7522c1b3d7d51f3cd90b729be24",
+    "is_verified": true,
+    "note": "Test CI Snapshot",
+    "actor_id": "ci-test"
+  },
+  "cybershield_backup_20260912_070032.db": {
+    "filename": "cybershield_backup_20260912_070032.db",
+    "size_bytes": 1929216,
+    "created_at": "2026-09-12T07:00:32.203707+00:00",
+    "checksum_sha256": "514f514d7c8358b7f3226b0fbcd1b0033c94c71b58dd19570e9f38d88baf94b7",
+    "is_verified": true,
+    "note": "REST API Test Snapshot",
+    "actor_id": "superadmin"
+  },
+  "cybershield_backup_20260912_070050.db": {
+    "filename": "cybershield_backup_20260912_070050.db",
+    "size_bytes": 1929216,
+    "created_at": "2026-09-12T07:00:50.888897+00:00",
+    "checksum_sha256": "b90faf48310ed54b2a2b56ecdacd99925fff2879f385114f158f8e6ca6855d1d",
+    "is_verified": true,
+    "note": "Automated CLI Unit Test",
+    "actor_id": "cli-admin"
+  },
+  "cybershield_backup_20260912_070129.db": {
+    "filename": "cybershield_backup_20260912_070129.db",
+    "size_bytes": 2080768,
+    "created_at": "2026-09-12T07:01:29.623621+00:00",
+    "checksum_sha256": "08af45f8fc08386fa3533945fc66df85cb1e9254ffde675c8bd26f265aadd48b",
+    "is_verified": true,
+    "note": "Test CI Snapshot",
+    "actor_id": "ci-test"
+  },
+  "cybershield_backup_20260912_070130.db": {
+    "filename": "cybershield_backup_20260912_070130.db",
+    "size_bytes": 2080768,
+    "created_at": "2026-09-12T07:01:30.179087+00:00",
+    "checksum_sha256": "fb0a9e289fee4632e3d432fcc3fab7f67f70f0e5d749d2ff55eebd62a8261cdb",
+    "is_verified": true,
+    "note": "Automated CLI Unit Test",
+    "actor_id": "cli-admin"
+  },
+  "cybershield_backup_20260912_092042.db": {
+    "filename": "cybershield_backup_20260912_092042.db",
+    "size_bytes": 2306048,
+    "created_at": "2026-09-12T09:20:42.640225+00:00",
+    "checksum_sha256": "a8202698fc307bd96a145b577632fe5332cd03747bb0da123926060d2f17bcfb",
+    "is_verified": true,
+    "note": "Automated CLI Unit Test",
+    "actor_id": "cli-admin"
+  },
+  "cybershield_backup_20260912_093123.db": {
+    "filename": "cybershield_backup_20260912_093123.db",
+    "size_bytes": 2502656,
+    "created_at": "2026-09-12T09:31:23.770477+00:00",
+    "checksum_sha256": "1fb6bb83af8c62894697268558c34df32b31f23929b16d685dfb8d9ee2a8fd0e",
+    "is_verified": true,
+    "note": "Test CI Snapshot",
+    "actor_id": "ci-test"
+  },
+  "cybershield_backup_20260912_093124.db": {
+    "filename": "cybershield_backup_20260912_093124.db",
+    "size_bytes": 2502656,
+    "created_at": "2026-09-12T09:31:24.310051+00:00",
+    "checksum_sha256": "f8171e6337d790ccc27fa452bba3bbdb4df6e24fefc2e4dc474993bacba58e7c",
+    "is_verified": true,
+    "note": "Automated CLI Unit Test",
+    "actor_id": "cli-admin"
+  },
+  "cybershield_backup_20260912_094158.db": {
+    "filename": "cybershield_backup_20260912_094158.db",
+    "size_bytes": 2682880,
+    "created_at": "2026-09-12T09:41:58.835170+00:00",
+    "checksum_sha256": "bbbdc46e4ca1f4678dfafdfc435fd689c94f227b4048ed2dd6f60f10068a565b",
+    "is_verified": true,
+    "note": "Test CI Snapshot",
+    "actor_id": "ci-test"
+  },
+  "cybershield_backup_20260912_094159.db": {
+    "filename": "cybershield_backup_20260912_094159.db",
+    "size_bytes": 2682880,
+    "created_at": "2026-09-12T09:41:59.507199+00:00",
+    "checksum_sha256": "918faecce092a565e9f792fd49cb3146f1771cd11f64d4c75b6aa4e7294af499",
+    "is_verified": true,
+    "note": "Automated CLI Unit Test",
+    "actor_id": "cli-admin"
+  },
+  "cybershield_backup_20260912_095208.db": {
+    "filename": "cybershield_backup_20260912_095208.db",
+    "size_bytes": 2871296,
+    "created_at": "2026-09-12T09:52:08.765846+00:00",
+    "checksum_sha256": "4a7d9550e910a3616aae134f47d52ca39556aa5680a0afc19b5000b6383c8635",
+    "is_verified": true,
+    "note": "Test CI Snapshot",
+    "actor_id": "ci-test"
+  },
+  "cybershield_backup_20260912_095209.db": {
+    "filename": "cybershield_backup_20260912_095209.db",
+    "size_bytes": 2871296,
+    "created_at": "2026-09-12T09:52:09.602374+00:00",
+    "checksum_sha256": "6d03e5e906f6574a57b4896b62a98b8f01212f19b8191a8c73ddcd8299c7d4fe",
+    "is_verified": true,
+    "note": "Automated CLI Unit Test",
+    "actor_id": "cli-admin"
+  },
+  "cybershield_backup_20260912_100844.db": {
+    "filename": "cybershield_backup_20260912_100844.db",
+    "size_bytes": 3096576,
+    "created_at": "2026-09-12T10:08:44.867453+00:00",
+    "checksum_sha256": "cacb624f41ae1a637b480c5cb5461d1b65b0baeea937a3d7165515686209a522",
+    "is_verified": true,
+    "note": "Automated CLI Unit Test",
+    "actor_id": "cli-admin"
+  },
+  "cybershield_backup_20260912_101009.db": {
+    "filename": "cybershield_backup_20260912_101009.db",
+    "size_bytes": 3297280,
+    "created_at": "2026-09-12T10:10:09.773241+00:00",
+    "checksum_sha256": "9d270d8302fa409ae0652b3f3bafea34fc185c813820eac5a973132f29813e13",
+    "is_verified": true,
+    "note": "Test CI Snapshot",
+    "actor_id": "ci-test"
+  },
+  "cybershield_backup_20260912_101010.db": {
+    "filename": "cybershield_backup_20260912_101010.db",
+    "size_bytes": 3297280,
+    "created_at": "2026-09-12T10:10:10.470442+00:00",
+    "checksum_sha256": "36ab26f945949f2f1d6d81f66060234bc1e3f415f5c1a0e7944e15d21d21653e",
+    "is_verified": true,
+    "note": "Automated CLI Unit Test",
+    "actor_id": "cli-admin"
+  },
+  "cybershield_backup_20260912_101636.db": {
+    "filename": "cybershield_backup_20260912_101636.db",
+    "size_bytes": 3493888,
+    "created_at": "2026-09-12T10:16:36.825411+00:00",
+    "checksum_sha256": "5e0da21380882fc5eea031cd02831566227ccb638f509eb1d7643aa99c0e7669",
+    "is_verified": true,
+    "note": "Test CI Snapshot",
+    "actor_id": "ci-test"
+  },
+  "cybershield_backup_20260912_101637.db": {
+    "filename": "cybershield_backup_20260912_101637.db",
+    "size_bytes": 3493888,
+    "created_at": "2026-09-12T10:16:37.527682+00:00",
+    "checksum_sha256": "ebed5c4ecf86d7927c6c5b7b1df733e04687c1605d60c880e18b644c3d8e31e3",
+    "is_verified": true,
+    "note": "Automated CLI Unit Test",
+    "actor_id": "cli-admin"
+  },
+  "cybershield_backup_20260912_102045.db": {
+    "filename": "cybershield_backup_20260912_102045.db",
+    "size_bytes": 3686400,
+    "created_at": "2026-09-12T10:20:45.741389+00:00",
+    "checksum_sha256": "45fd287d9c8e5e71bf4ecc3f5d64d90d53b88fdc6979a9f8c7b206ab1db310d0",
+    "is_verified": true,
+    "note": "Test CI Snapshot",
+    "actor_id": "ci-test"
+  },
+  "cybershield_backup_20260912_102046.db": {
+    "filename": "cybershield_backup_20260912_102046.db",
+    "size_bytes": 3686400,
+    "created_at": "2026-09-12T10:20:46.432196+00:00",
+    "checksum_sha256": "ac365a06d9b9b520424f1d58b0ba05f4871db35c574e94f4a72765c9686494e2",
+    "is_verified": true,
+    "note": "Automated CLI Unit Test",
+    "actor_id": "cli-admin"
+  },
+  "cybershield_backup_20260912_102706.db": {
+    "filename": "cybershield_backup_20260912_102706.db",
+    "size_bytes": 3858432,
+    "created_at": "2026-09-12T10:27:06.879476+00:00",
+    "checksum_sha256": "067a7d33230245eee1c7d59e2e52b69f86866f7dc46c1419dd308cd689bccadc",
+    "is_verified": true,
+    "note": "Test CI Snapshot",
+    "actor_id": "ci-test"
+  },
+  "cybershield_backup_20260912_102707.db": {
+    "filename": "cybershield_backup_20260912_102707.db",
+    "size_bytes": 3858432,
+    "created_at": "2026-09-12T10:27:07.659927+00:00",
+    "checksum_sha256": "6ebe25d4bc4713ad52ceada50065034127cfada8393b22626f1bd2d65fc36afb",
+    "is_verified": true,
+    "note": "Automated CLI Unit Test",
+    "actor_id": "cli-admin"
+  },
+  "cybershield_backup_20260912_104108.db": {
+    "filename": "cybershield_backup_20260912_104108.db",
+    "size_bytes": 4046848,
+    "created_at": "2026-09-12T10:41:08.526921+00:00",
+    "checksum_sha256": "5d49989396f77d435f5a08244063c1f4963a67327b706e357f6d1e4668810f36",
+    "is_verified": true,
+    "note": "Test CI Snapshot",
+    "actor_id": "ci-test"
+  },
+  "cybershield_backup_20260912_104109.db": {
+    "filename": "cybershield_backup_20260912_104109.db",
+    "size_bytes": 4046848,
+    "created_at": "2026-09-12T10:41:09.412617+00:00",
+    "checksum_sha256": "f6de6f6b41ea0fd7ce733113a9e745e6d3dad69401b45ead79521984512c962f",
+    "is_verified": true,
+    "note": "Automated CLI Unit Test",
+    "actor_id": "cli-admin"
+  },
+  "cybershield_backup_20260912_104430.db": {
+    "filename": "cybershield_backup_20260912_104430.db",
+    "size_bytes": 4259840,
+    "created_at": "2026-09-12T10:44:30.316942+00:00",
+    "checksum_sha256": "7ae7b642c7cd7d5beef913da057c6213a6cf333c598074671c755c949a26faa6",
+    "is_verified": true,
+    "note": "Test CI Snapshot",
+    "actor_id": "ci-test"
+  },
+  "cybershield_backup_20260912_104431.db": {
+    "filename": "cybershield_backup_20260912_104431.db",
+    "size_bytes": 4259840,
+    "created_at": "2026-09-12T10:44:31.257902+00:00",
+    "checksum_sha256": "a42e903db16baeec617040c5c126b9cf360a04c0469448a292d46aa510ead650",
+    "is_verified": true,
+    "note": "Automated CLI Unit Test",
+    "actor_id": "cli-admin"
+  },
+  "cybershield_backup_20260912_104742.db": {
+    "filename": "cybershield_backup_20260912_104742.db",
+    "size_bytes": 4444160,
+    "created_at": "2026-09-12T10:47:42.650836+00:00",
+    "checksum_sha256": "53a7c843c5f41f422911d859f327aa95793a73d07385fb6593ac21571cbb9b47",
+    "is_verified": true,
+    "note": "Test CI Snapshot",
+    "actor_id": "ci-test"
+  },
+  "cybershield_backup_20260912_104743.db": {
+    "filename": "cybershield_backup_20260912_104743.db",
+    "size_bytes": 4444160,
+    "created_at": "2026-09-12T10:47:43.442305+00:00",
+    "checksum_sha256": "61398d1437f610f371d70fe8a28180e554c958d38ca3cc2426bea70169f59c9d",
+    "is_verified": true,
+    "note": "Automated CLI Unit Test",
+    "actor_id": "cli-admin"
+  },
+  "cybershield_backup_20260912_105229.db": {
+    "filename": "cybershield_backup_20260912_105229.db",
+    "size_bytes": 4653056,
+    "created_at": "2026-09-12T10:52:29.557117+00:00",
+    "checksum_sha256": "b83a34fdb79bca3b9352b2a37f651055d1693654f26a4492242a515105d1a997",
+    "is_verified": true,
+    "note": "Test CI Snapshot",
+    "actor_id": "ci-test"
+  },
+  "cybershield_backup_20260912_105230.db": {
+    "filename": "cybershield_backup_20260912_105230.db",
+    "size_bytes": 4653056,
+    "created_at": "2026-09-12T10:52:30.515795+00:00",
+    "checksum_sha256": "ead662ccc0eaff5955fd3a9c171af5ac571c4f57af956f86b78788cc1eff12f2",
+    "is_verified": true,
+    "note": "Automated CLI Unit Test",
+    "actor_id": "cli-admin"
+  },
+  "cybershield_backup_20260912_105613.db": {
+    "filename": "cybershield_backup_20260912_105613.db",
+    "size_bytes": 4845568,
+    "created_at": "2026-09-12T10:56:13.911372+00:00",
+    "checksum_sha256": "990ad1906057ad03bd5dc9db360f16b4417456a8f9c381e6b9c13fd90aec1c89",
+    "is_verified": true,
+    "note": "Automated CLI Unit Test",
+    "actor_id": "cli-admin"
+  },
+  "cybershield_backup_20260912_105913.db": {
+    "filename": "cybershield_backup_20260912_105913.db",
+    "size_bytes": 5066752,
+    "created_at": "2026-09-12T10:59:13.707020+00:00",
+    "checksum_sha256": "e38a86e37161fb9418bc1ae164c3d677b147fcdadc364a2579143785e6567fcd",
+    "is_verified": true,
+    "note": "Test CI Snapshot",
+    "actor_id": "ci-test"
+  },
+  "cybershield_backup_20260912_105914.db": {
+    "filename": "cybershield_backup_20260912_105914.db",
+    "size_bytes": 5066752,
+    "created_at": "2026-09-12T10:59:14.470813+00:00",
+    "checksum_sha256": "20197c673a08b44ea7b4ef0c867186dddc09c0b78bb01cc708827ba9f04724bd",
+    "is_verified": true,
+    "note": "Automated CLI Unit Test",
+    "actor_id": "cli-admin"
+  },
+  "cybershield_backup_20260912_110326.db": {
+    "filename": "cybershield_backup_20260912_110326.db",
+    "size_bytes": 5292032,
+    "created_at": "2026-09-12T11:03:26.951784+00:00",
+    "checksum_sha256": "a94bde14868c59de7116c361be8b1c27e2a81ae695e45773b4b5a00df8653cf5",
+    "is_verified": true,
+    "note": "Test CI Snapshot",
+    "actor_id": "ci-test"
+  },
+  "cybershield_backup_20260912_110327.db": {
+    "filename": "cybershield_backup_20260912_110327.db",
+    "size_bytes": 5292032,
+    "created_at": "2026-09-12T11:03:27.748808+00:00",
+    "checksum_sha256": "8a065f602fc68f5db3b738e173d69774d179db4bf7b4df2933b3771f4aa2dd75",
+    "is_verified": true,
+    "note": "Automated CLI Unit Test",
+    "actor_id": "cli-admin"
+  },
+  "cybershield_backup_20260912_111742.db": {
+    "filename": "cybershield_backup_20260912_111742.db",
+    "size_bytes": 5525504,
+    "created_at": "2026-09-12T11:17:42.538441+00:00",
+    "checksum_sha256": "13671b1c043667521486fd1a6e841ff7525f2f7f26aba18e629161c48dd6c698",
+    "is_verified": true,
+    "note": "Test CI Snapshot",
+    "actor_id": "ci-test"
+  },
+  "cybershield_backup_20260912_111743.db": {
+    "filename": "cybershield_backup_20260912_111743.db",
+    "size_bytes": 5525504,
+    "created_at": "2026-09-12T11:17:43.389210+00:00",
+    "checksum_sha256": "2641263824eadde499fe7d51433d7d6bee64abfc60fcf8f6dd2fab95b2cb067a",
+    "is_verified": true,
+    "note": "Automated CLI Unit Test",
+    "actor_id": "cli-admin"
+  }
+}
