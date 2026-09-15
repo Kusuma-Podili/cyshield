@@ -1,6 +1,6 @@
 /* ==========================================================================
-   CyberShield Enterprise SOC Glass Cockpit
-   Humanized White Theme - Single Accent: Royal Amethyst (#7C3AED)
+   CyShield Enterprise SOC Glass Cockpit
+   Humanized White Theme - Modern Enterprise Blue (#2563EB) & Cyber Green (#059669)
    ========================================================================== */
 
 :root {
@@ -10,42 +10,45 @@
   --bg-card: #FFFFFF;
   --bg-hover: #F4F4F5;
   --border-color: #E4E4E7;
-  --border-glow: rgba(124, 58, 237, 0.2);
+  --border-glow: rgba(37, 99, 235, 0.2);
   
   /* High-Legibility Slate Typography */
   --text-primary: #0F172A;
   --text-secondary: #475569;
   --text-muted: #94A3B8;
   
-  /* Single Humanized Accent Color: Royal Amethyst / Deep Violet */
-  /* Definitively NEITHER Blue NOR Green */
-  --accent-primary: #7C3AED;
-  --accent-hover: #6D28D9;
-  --accent-dark: #5B21B6;
-  --accent-subtle: #F5F3FF;
-  --accent-border: #DDD6FE;
-  --accent-glow: 0 4px 14px rgba(124, 58, 237, 0.18);
+  /* Primary Accent: Modern Enterprise Tech Blue (#2563EB) */
+  --accent-primary: #2563EB;
+  --accent-hover: #1D4ED8;
+  --accent-dark: #1E40AF;
+  --accent-subtle: #EFF6FF;
+  --accent-border: #BFDBFE;
+  --accent-glow: 0 4px 14px rgba(37, 99, 235, 0.18);
 
-  /* Unified Single Color Mapping for all legacy components */
-  --cyan-neon: #7C3AED;
-  --cyan-glow: 0 2px 8px rgba(124, 58, 237, 0.2);
-  --green-neon: #7C3AED;
-  --green-glow: 0 2px 8px rgba(124, 58, 237, 0.2);
-  --yellow-amber: #6D28D9;
-  --orange-warn: #6D28D9;
-  --orange-warning: #6D28D9;
-  --red-critical: #5B21B6;
-  --red-glow: 0 2px 8px rgba(91, 33, 182, 0.2);
-  --purple-accent: #7C3AED;
+  /* Secondary Status Accent: Emerald Cyber Green (#059669) */
+  --accent-green: #059669;
+  --green-neon: #059669;
+  --green-glow: 0 2px 8px rgba(5, 150, 105, 0.2);
+  --green-subtle: #ECFDF5;
+  --green-border: #A7F3D0;
+
+  /* Component Palette Mappings */
+  --cyan-neon: #2563EB;
+  --cyan-glow: 0 2px 8px rgba(37, 99, 235, 0.2);
+  --yellow-amber: #059669;
+  --orange-warn: #2563EB;
+  --orange-warning: #2563EB;
+  --red-critical: #1E40AF;
+  --red-glow: 0 2px 8px rgba(30, 64, 175, 0.2);
+  --purple-accent: #2563EB;
   
-  --accent-blue: #7C3AED;
-  --accent-cyan: #7C3AED;
-  --accent-green: #7C3AED;
-  --accent-orange: #6D28D9;
-  --accent-red: #5B21B6;
-  --amber-neon: #6D28D9;
-  --red-neon: #5B21B6;
-  --yellow-alert: #6D28D9;
+  --accent-blue: #2563EB;
+  --accent-cyan: #2563EB;
+  --accent-orange: #2563EB;
+  --accent-red: #1E40AF;
+  --amber-neon: #059669;
+  --red-neon: #1E40AF;
+  --yellow-alert: #059669;
   
   --font-mono: "SF Mono", "Fira Code", "Consolas", monospace;
   --font-sans: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
@@ -72,8 +75,8 @@ body {
   line-height: 1.5;
   overflow-x: hidden;
   background-image: 
-    radial-gradient(circle at 15% 15%, rgba(124, 58, 237, 0.02) 0%, transparent 40%),
-    radial-gradient(circle at 85% 85%, rgba(124, 58, 237, 0.02) 0%, transparent 40%);
+    radial-gradient(circle at 15% 15%, rgba(37, 99, 235, 0.02) 0%, transparent 40%),
+    radial-gradient(circle at 85% 85%, rgba(37, 99, 235, 0.02) 0%, transparent 40%);
 }
 
 /* Header & Navigation */
@@ -148,7 +151,7 @@ body {
   height: 8px;
   border-radius: 50%;
   background-color: var(--accent-primary);
-  box-shadow: 0 0 6px rgba(124, 58, 237, 0.4);
+  box-shadow: 0 0 6px rgba(37, 99, 235, 0.4);
   animation: pulse-accent 2s infinite;
 }
 
@@ -476,7 +479,7 @@ tr:hover td {
 
 .mitre-technique-card:hover {
   border-color: var(--accent-primary);
-  box-shadow: 0 2px 6px rgba(124, 58, 237, 0.15);
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.15);
 }
 
 .mitre-technique-card.hot {
@@ -587,7 +590,7 @@ tr:hover td {
 
 .csql-input:focus {
   border-color: var(--accent-primary);
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 
 /* Modal / Drawer */
@@ -1147,7 +1150,7 @@ tr:hover td {
 
 .input-field:focus {
   border-color: var(--accent-primary);
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 
 .default-creds-hint {
