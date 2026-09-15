@@ -1,0 +1,42 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Environments & Dependencies
+venv/
+env/
+ENV/
+.venv/
+node_modules/
+
+# Local databases, runtime artifacts, and evidence lockers
+data/*.db
+data/*.sqlite
+data/evidence/*
+data/backups/*
+data/lakehouse/*
+
+# Environment files, secrets & sensitive keys (strictly blocked)
+.env
+.env.*
+*.env
+*.pem
+*.key
+*.secret
+*.token
+*.credential
+
+# Testing & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Operating System & IDE Artifacts
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
