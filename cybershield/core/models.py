@@ -1,0 +1,332 @@
+"""CyberShield Enterprise Core Domain Models.
+
+Built with high-performance Pydantic v2 models conforming to OCSF
+(Open Cybersecurity Schema Framework) and Elastic Common Schema (ECS) principles.
+"""
+
+from __future__ import annotations
+
+import uuid
+from datetime import datetime, timezone
+from enum import Enum
+from typing import Dict, List, Optional, Any, Union
+from pydantic import BaseModel, Field, ConfigDict
+
+
+def generate_id(prefix: str = "CS") -> str:
+    """Generate cryptographically unique entity identifier."""
+    return f"{prefix}-{uuid.uuid4().hex[:12].upper()}"
+
+
+def now_utc() -> datetime:
+    """Return timezone-aware current UTC datetime."""
+    return datetime.now(timezone.utc)
+
+
+class Severity(str, Enum):
+    INFORMATIONAL = "INFORMATIONAL"
+    LOW = "LOW"
+    MEDIUM = "MEDIUM"
+    HIGH = "HIGH"
+    CRITICAL = "CRITICAL"
+
+    @property
+    def score(self) -> int:
+        mapping = {
+            "INFORMATIONAL": 10,
+            "LOW": 30,
+            "MEDIUM": 60,
+            "HIGH": 85,
+            "CRITICAL": 100,
+        }
+        return mapping[self.value]
+
+
+class AlertStatus(str, Enum):
+    NEW = "NEW"
+    TRIAGED = "TRIAGED"
+    IN_PROGRESS = "IN_PROGRESS"
+    CONTAINED = "CONTAINED"
+    CLOSED_RESOLVED = "CLOSED_RESOLVED"
+    CLOSED_FALSE_POSITIVE = "CLOSED_FALSE_POSITIVE"
+
+
+class IncidentStatus(str, Enum):
+    OPEN = "OPEN"
+    INVESTIGATING = "INVESTIGATING"
+    CONTAINED = "CONTAINED"
+    REMEDIATED = "REMEDIATED"
+    POST_MORTEM = "POST_MORTEM"
+    ARCHIVED = "ARCHIVED"
+
+
+class LogSourceType(str, Enum):
+    SYSLOG = "SYSLOG"
+    SYSMON = "SYSMON"
+    WINDOWS_EVENT = "WINDOWS_EVENT"
+    ZEEK_SURICATA = "ZEEK_SURICATA"
+    APACHE_NGINX = "APACHE_NGINX"
+    AUDITD = "AUDITD"
+    CLOUDTRAIL = "CLOUDTRAIL"
+    SYNTHETIC = "SYNTHETIC"
+
+
+class DetectionEngineType(str, Enum):
+    ISOLATION_FOREST = "ISOLATION_FOREST"
+    UEBA_ENGINE = "UEBA_ENGINE"
+    INJECTION_CLASSIFIER = "INJECTION_CLASSIFIER"
+    STATIC_SCANNER = "STATIC_SCANNER"
+    SIGMA_RULE = "SIGMA_RULE"
+    YARA_SCANNER = "YARA_SCANNER"
+    MITRE_CORRELATION = "MITRE_CORRELATION"
+    THREAT_INTEL = "THREAT_INTEL"
+    HEURISTIC_RULE = "HEURISTIC_RULE"
+
+
+class IoCType(str, Enum):
+    IP = "IP"
+    DOMAIN = "DOMAIN"
+    SHA256 = "SHA256"
+    MD5 = "MD5"
+    URL = "URL"
+    MUTEX = "MUTEX"
+
+
+class NetworkFlow(BaseModel):
+    """Network flow record for ML traffic and anomaly inspection."""
+    model_config = ConfigDict(extra="ignore")
+
+    flow_id: str = Field(default_factory=lambda: generate_id("FLOW"))
+    timestamp: datetime = Field(default_factory=now_utc)
+    source_ip: str
+    destination_ip: str
+    source_port: int
+    destination_port: int
+    protocol: str = "TCP"  # TCP, UDP, ICMP
+    bytes_sent: int = 0
+    bytes_received: int = 0
+    packets_sent: int = 0
+    packets_received: int = 0
+    duration_ms: float = 0.0
+    tcp_flags: List[str] = Field(default_factory=list)
+    byte_entropy: float = 0.0
+    domain: Optional[str] = None
+    user_agent: Optional[str] = None
+    ja3_fingerprint: Optional[str] = None
+
+
+class NormalizedEvent(BaseModel):
+    """Normalized telemetry event matching ECS / OCSF security schemas."""
+    model_config = ConfigDict(extra="ignore")
+
+    event_id: str = Field(default_factory=lambda: generate_id("EVT"))
+    timestamp: datetime = Field(default_factory=now_utc)
+    log_source: LogSourceType = LogSourceType.SYSLOG
+    event_category: str = "security"
+    event_action: str = "observed"
+    
+    # Network Layer
+    source_ip: Optional[str] = None
+    destination_ip: Optional[str] = None
+    source_port: Optional[int] = None
+    destination_port: Optional[int] = None
+    protocol: Optional[str] = None
+    
+    # Host / Endpoint Layer
+    host_name: Optional[str] = None
+    host_ip: Optional[str] = None
+    user_name: Optional[str] = None
+    user_domain: Optional[str] = None
+    
+    # Process Layer
+    process_id: Optional[int] = None
+    process_name: Optional[str] = None
+    process_path: Optional[str] = None
+    command_line: Optional[str] = None
+    parent_process_id: Optional[int] = None
+    parent_process_name: Optional[str] = None
+    
+    # File / System Layer
+    file_path: Optional[str] = None
+    file_name: Optional[str] = None
+    file_hash_sha256: Optional[str] = None
+    file_size_bytes: Optional[int] = None
+    registry_key: Optional[str] = None
+    registry_value: Optional[str] = None
+    
+    # Application / HTTP Layer
+    http_method: Optional[str] = None
+    http_url: Optional[str] = None
+    http_status: Optional[int] = None
+    http_user_agent: Optional[str] = None
+    payload_content: Optional[str] = None
+    
+    # Context & Raw
+    raw_payload: str = ""
+    metadata: Dict[str, Any] = Field(default_factory=dict)
+    tags: List[str] = Field(default_factory=list)
+
+
+class Alert(BaseModel):
+    """Actionable cybersecurity alert generated by detection engines."""
+    model_config = ConfigDict(extra="ignore")
+
+    alert_id: str = Field(default_factory=lambda: generate_id("ALT"))
+    title: str
+    description: str
+    severity: Severity = Severity.MEDIUM
+    confidence: float = Field(default=0.85, ge=0.0, le=1.0)
+    detection_engine: DetectionEngineType = DetectionEngineType.SIGMA_RULE
+    rule_id: Optional[str] = None
+    rule_name: Optional[str] = None
+    
+    # MITRE ATT&CK Mapping
+    mitre_tactics: List[str] = Field(default_factory=list)
+    mitre_techniques: List[str] = Field(default_factory=list)
+    
+    # Impacted Entities
+    primary_source_ip: Optional[str] = None
+    primary_dest_ip: Optional[str] = None
+    impacted_host: Optional[str] = None
+    impacted_user: Optional[str] = None
+    
+    # Correlated Telemetry
+    source_event_ids: List[str] = Field(default_factory=list)
+    indicators_of_compromise: List[str] = Field(default_factory=list)
+    
+    # Status & Triage
+    status: AlertStatus = AlertStatus.NEW
+    assigned_analyst: Optional[str] = None
+    created_at: datetime = Field(default_factory=now_utc)
+    updated_at: datetime = Field(default_factory=now_utc)
+    false_positive_probability: float = 0.05
+    
+    # SOAR Audit
+    containment_actions_taken: List[str] = Field(default_factory=list)
+    associated_incident_id: Optional[str] = None
+
+
+class CustodyRecord(BaseModel):
+    """Cryptographic chain-of-custody stamp for digital forensic evidence."""
+    record_id: str = Field(default_factory=lambda: generate_id("CUST"))
+    timestamp: datetime = Field(default_factory=now_utc)
+    analyst_or_agent: str
+    action: str  # e.g., "ACQUIRED", "SEALED", "EXPORTED", "VERIFIED"
+    sha256_hash: str
+    notes: Optional[str] = None
+
+
+class EvidenceArtifact(BaseModel):
+    """Digital forensics artifact with cryptographic integrity verification."""
+    artifact_id: str = Field(default_factory=lambda: generate_id("ART"))
+    incident_id: Optional[str] = None
+    alert_id: Optional[str] = None
+    name: str
+    artifact_type: str  # PCAP, MEMORY_DUMP, LOG_SLICE, BINARY_FILE, PROCESS_LIST
+    file_size_bytes: int = 0
+    sha256_hash: str
+    sha1_hash: Optional[str] = None
+    md5_hash: Optional[str] = None
+    collected_at: datetime = Field(default_factory=now_utc)
+    collector: str = "CyberShield Forensic Engine"
+    storage_path: Optional[str] = None
+    chain_of_custody: List[CustodyRecord] = Field(default_factory=list)
+    is_sealed: bool = True
+
+
+class PlaybookStep(BaseModel):
+    """Atomic step in a SOAR automation workflow."""
+    step_id: str = Field(default_factory=lambda: generate_id("STEP"))
+    name: str
+    action_type: str  # ISOLATE_HOST, BLOCK_IP, KILL_PROCESS, REVOKE_TOKEN, SNAPSHOT_MEMORY, NOTIFY_SOC
+    target: str
+    parameters: Dict[str, Any] = Field(default_factory=dict)
+    status: str = "PENDING"  # PENDING, RUNNING, COMPLETED, FAILED, SKIPPED
+    result_message: Optional[str] = None
+    executed_at: Optional[datetime] = None
+    duration_ms: float = 0.0
+
+
+class PlaybookExecution(BaseModel):
+    """Execution trace of an automated or analyst-triggered SOAR playbook."""
+    execution_id: str = Field(default_factory=lambda: generate_id("SOAR"))
+    playbook_id: str
+    playbook_name: str
+    trigger_alert_id: Optional[str] = None
+    target_entity: str
+    status: str = "RUNNING"  # RUNNING, COMPLETED, FAILED, PAUSED_APPROVAL
+    steps: List[PlaybookStep] = Field(default_factory=list)
+    started_at: datetime = Field(default_factory=now_utc)
+    completed_at: Optional[datetime] = None
+    executed_by: str = "AUTOMATION"
+    error_message: Optional[str] = None
+
+
+class Incident(BaseModel):
+    """Full-lifecycle security incident case file."""
+    incident_id: str = Field(default_factory=lambda: generate_id("INC"))
+    title: str
+    summary: str
+    severity: Severity = Severity.HIGH
+    status: IncidentStatus = IncidentStatus.OPEN
+    lead_analyst: str = "Unassigned"
+    related_alert_ids: List[str] = Field(default_factory=list)
+    affected_hosts: List[str] = Field(default_factory=list)
+    affected_users: List[str] = Field(default_factory=list)
+    evidence_artifact_ids: List[str] = Field(default_factory=list)
+    playbook_execution_ids: List[str] = Field(default_factory=list)
+    kill_chain_phase: str = "Initial Access"
+    created_at: datetime = Field(default_factory=now_utc)
+    updated_at: datetime = Field(default_factory=now_utc)
+    containment_at: Optional[datetime] = None
+    remediation_notes: Optional[str] = None
+
+
+class IoCEntry(BaseModel):
+    """Indicator of Compromise for local threat intelligence matching."""
+    ioc_id: str = Field(default_factory=lambda: generate_id("IOC"))
+    type: IoCType
+    value: str
+    threat_name: str
+    confidence: float = 0.90
+    severity: Severity = Severity.HIGH
+    source: str = "CyberShield Local Intel"
+    first_seen: datetime = Field(default_factory=now_utc)
+    tags: List[str] = Field(default_factory=list)
+
+
+class CVSSMetrics(BaseModel):
+    """CVSS v3.1 vector calculation metrics."""
+    score: float = Field(ge=0.0, le=10.0)
+    severity: Severity
+    vector_string: str
+    attack_vector: str = "NETWORK"
+    attack_complexity: str = "LOW"
+    privileges_required: str = "NONE"
+    user_interaction: str = "NONE"
+    scope: str = "UNCHANGED"
+    confidentiality: str = "HIGH"
+    integrity: str = "HIGH"
+    availability: str = "HIGH"
+
+
+class CVECatalogEntry(BaseModel):
+    """Vulnerability catalog definition."""
+    cve_id: str  # e.g., CVE-2024-3094
+    title: str
+    description: str
+    cwe_id: Optional[str] = None
+    cvss: CVSSMetrics
+    affected_software: List[str] = Field(default_factory=list)
+    mitigation_advice: str
+
+
+class MITRETechnique(BaseModel):
+    """MITRE ATT&CK Matrix technique definition."""
+    technique_id: str  # e.g., T1059.001
+    name: str
+    tactic: str  # e.g., Execution, Persistence, Lateral Movement
+    description: str
+    detection_strategies: List[str] = Field(default_factory=list)
+    platforms: List[str] = Field(default_factory=lambda: ["Windows", "Linux", "macOS"])
+    kill_chain_order: int = 1
