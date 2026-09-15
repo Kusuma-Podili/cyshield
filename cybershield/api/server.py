@@ -9,7 +9,7 @@ from __future__ import annotations
 import logging
 from contextlib import asynccontextmanager
 from pathlib import Path
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -293,13 +293,56 @@ async def websocket_soc_endpoint(websocket: WebSocket):
         ws_hub.disconnect(websocket)
 
 
-@app.get("/", response_class=HTMLResponse)
-async def get_dashboard():
-    """Serve the primary single-pane-of-glass SOC Glass Cockpit."""
+@app.get("/")
+async def get_dashboard(request: Request):
+    """Serve the primary single-pane-of-glass SOC Glass Cockpit or structured JSON status.
+    
+    Returns interactive HTML when requested by a browser (Accept: text/html),
+    or structured JSON when requested by API clients, scripts, or TrainPlex collectors.
+    """
+    accept = request.headers.get("accept", "")
+    if "text/html" in accept and "application/json" not in accept:
+        index_file = TEMPLATES_DIR / "index.html"
+        if index_file.exists():
+            return HTMLResponse(content=index_file.read_text(encoding="utf-8"))
+        return HTMLResponse("<h2>CyberShield Enterprise Web UI initializing...</h2>")
+
+    return JSONResponse(
+        content={
+            "status": "OPERATIONAL",
+            "name": "CyberShield Enterprise Next-Gen AI SOC",
+            "version": __version__,
+            "build": __build__,
+            "telemetry": "active",
+            "dashboard_url": "/dashboard",
+            "health_url": "/health",
+            "api_v1": "/api/v1",
+        }
+    )
+
+
+@app.get("/dashboard", response_class=HTMLResponse)
+async def get_dashboard_html():
+    """Explicit HTML SOC dashboard route."""
     index_file = TEMPLATES_DIR / "index.html"
     if index_file.exists():
         return HTMLResponse(content=index_file.read_text(encoding="utf-8"))
     return HTMLResponse("<h2>CyberShield Enterprise Web UI initializing...</h2>")
+
+
+@app.get("/health")
+@app.get("/api/v1/health")
+@app.get("/ping")
+async def health_probes():
+    """Universal health probes for test runners, collectors, and monitoring agents."""
+    return JSONResponse(
+        content={
+            "status": "ok",
+            "service": "cyshield",
+            "version": __version__,
+            "health": "healthy",
+        }
+    )
 
 
 @app.get("/api/v1/system/metrics")
