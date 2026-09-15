@@ -1,0 +1,22 @@
+# CyberShield Enterprise - High-Fidelity Suricata / Snort NIDS Signatures
+# Mapped to MITRE ATT&CK Enterprise Matrix
+
+# --- APT & Command-and-Control (C2) ---
+alert tcp $HOME_NET any -> $EXTERNAL_NET any (msg:"CYBERSHIELD APT Cobalt Strike Beacon HTTP GET Request"; flow:to_server,established; content:"GET"; http_method; content:"/pixel.gif"; http_uri; content:"Host: "; http_header; pcre:"/\/(submit\.php|match\.php|pixel\.gif)\?id=[a-zA-Z0-9]{8}/U"; classtype:trojan-activity; sid:2800001; rev:1; metadata:mitre_technique T1071.001;)
+alert tcp $HOME_NET any -> $EXTERNAL_NET 4444 (msg:"CYBERSHIELD Metasploit Default Handler Port 4444 Active"; flow:to_server; classtype:bad-unknown; sid:2800002; rev:1; metadata:mitre_technique T1571;)
+alert tcp $HOME_NET any -> $EXTERNAL_NET any (msg:"CYBERSHIELD Reverse Shell Interactive TCP Spawn"; flow:to_server,established; content:"/bin/sh"; depth:32; classtype:successful-admin; sid:2800003; rev:1; metadata:mitre_technique T1059.004;)
+
+# --- Remote Code Execution & Web Exploitation ---
+alert tcp any any -> $HTTP_SERVERS $HTTP_PORTS (msg:"CYBERSHIELD EXPLOIT Apache Log4j JNDI Injection Attempt (CVE-2021-44228)"; flow:to_server,established; content:"${jndi:"; nocase; classtype:attempted-admin; sid:2800010; rev:2; metadata:mitre_technique T1190;)
+alert tcp any any -> $HTTP_SERVERS $HTTP_PORTS (msg:"CYBERSHIELD EXPLOIT SQL Injection UNION SELECT Extraction"; flow:to_server,established; content:"UNION"; nocase; content:"SELECT"; nocase; classtype:web-application-attack; sid:2800011; rev:1; metadata:mitre_technique T1190;)
+alert tcp any any -> $HTTP_SERVERS $HTTP_PORTS (msg:"CYBERSHIELD EXPLOIT Spring4Shell DataBinder Classloader Manipulation (CVE-2022-22965)"; flow:to_server,established; content:"class.module.classLoader"; nocase; classtype:attempted-admin; sid:2800012; rev:1; metadata:mitre_technique T1190;)
+alert tcp $HOME_NET any -> 169.254.169.254 $HTTP_PORTS (msg:"CYBERSHIELD SSRF AWS EC2 Instance Metadata Token Access Attempt"; flow:to_server; content:"GET"; http_method; content:"latest/meta-data/"; http_uri; classtype:bad-unknown; sid:2800013; rev:1; metadata:mitre_technique T1552;)
+
+# --- Lateral Movement & Network Exploits ---
+alert smb any any -> $HOME_NET [445,139] (msg:"CYBERSHIELD EXPLOIT EternalBlue SMBv1 Buffer Overflow MS17-010 Attempt"; flow:to_server,established; content:"|ff|SMB|32|"; depth:5; offset:4; classtype:attempted-admin; sid:2800020; rev:1; metadata:mitre_technique T1210;)
+alert tcp any any -> $HOME_NET 88 (msg:"CYBERSHIELD KERBEROS Kerberoasting RC4-HMAC Ticket Request"; flow:to_server; content:"|a2|"; depth:32; content:"|17|"; distance:0; classtype:credential-theft; sid:2800021; rev:1; metadata:mitre_technique T1558.003;)
+
+# --- ICS / SCADA OT Threats ---
+alert tcp any any -> $HOME_NET 502 (msg:"CYBERSHIELD ICS/SCADA Modbus TCP Force Single Coil Command"; flow:to_server; content:"|00 00|"; depth:2; offset:2; content:"|05|"; offset:7; depth:1; classtype:industrial-control; sid:2800030; rev:1; metadata:mitre_technique T0855;)
+alert tcp any any -> $HOME_NET 502 (msg:"CYBERSHIELD ICS/SCADA Modbus TCP Write Multiple Registers Command"; flow:to_server; content:"|00 00|"; depth:2; offset:2; content:"|10|"; offset:7; depth:1; classtype:industrial-control; sid:2800031; rev:1; metadata:mitre_technique T0855;)
+alert tcp any any -> $HOME_NET 20000 (msg:"CYBERSHIELD ICS/SCADA DNP3 Cold Restart Command"; flow:to_server; content:"|05 64|"; depth:2; content:"|0d|"; offset:12; depth:1; classtype:industrial-control; sid:2800032; rev:1; metadata:mitre_technique T0816;)
