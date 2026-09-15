@@ -1,0 +1,40 @@
+{
+  "id": "PB-CLOUD-ROOT-01",
+  "name": "Cloud Root Account Compromise Containment",
+  "description": "Emergency containment triggered by AWS/GCP/Azure root console login without MFA or unauthorized SCP modifications.",
+  "trigger_criteria": {
+    "severity": "CRITICAL",
+    "mitre_technique": "T1078.004"
+  },
+  "steps": [
+    {
+      "name": "1. Block Attacker Source IP at Cloud WAF and Edge",
+      "action": "BLOCK_IP",
+      "target": "{{source_ip}}",
+      "parameters": {
+        "direction": "INGRESS",
+        "ttl": 2592000
+      },
+      "abort_on_failure": false
+    },
+    {
+      "name": "2. Invalidate Active IAM Root Tokens and Access Keys",
+      "action": "REVOKE_USER_CREDENTIALS",
+      "target": "root",
+      "parameters": {
+        "reason": "Root console login detected without MFA."
+      },
+      "abort_on_failure": false
+    },
+    {
+      "name": "3. Critical Priority Alert to CISO and Cloud Incident Commanders",
+      "action": "NOTIFY_SOC",
+      "target": "#ciso-emergency-desk",
+      "parameters": {
+        "urgency": "CRITICAL",
+        "message": "ROOT COMPROMISE: AWS Root access detected from IP {{source_ip}}. Activating Cloud Emergency Protocol."
+      },
+      "abort_on_failure": false
+    }
+  ]
+}

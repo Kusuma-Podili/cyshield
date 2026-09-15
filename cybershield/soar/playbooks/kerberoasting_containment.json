@@ -1,0 +1,48 @@
+{
+  "id": "PB-KERBEROAST-01",
+  "name": "Kerberoasting & Golden Ticket Autonomous Containment",
+  "description": "Countermeasure playbook triggered by abnormal RC4 TGS-REQ ticket spikes or forged Kerberos tickets.",
+  "trigger_criteria": {
+    "severity": "HIGH",
+    "mitre_technique": "T1558"
+  },
+  "steps": [
+    {
+      "name": "1. Temporarily Restrict Requesting Machine Network Access",
+      "action": "ISOLATE_HOST",
+      "target": "{{host}}",
+      "parameters": {
+        "reason": "Machine generating anomalous Kerberoasting RC4 requests."
+      },
+      "abort_on_failure": false
+    },
+    {
+      "name": "2. Deploy Canary Active Directory Decoy Account",
+      "action": "TRIGGER_DECEPTION_TRIPWIRE",
+      "target": "{{host}}",
+      "parameters": {
+        "trap_type": "CANARY_AD_ACCOUNT"
+      },
+      "abort_on_failure": false
+    },
+    {
+      "name": "3. Capture Process Memory and Kerberos Ticket Cache",
+      "action": "CAPTURE_FORENSIC_SNAPSHOT",
+      "target": "{{host}}",
+      "parameters": {
+        "forensic_profile": "LSA_And_Kerberos_Tickets"
+      },
+      "abort_on_failure": false
+    },
+    {
+      "name": "4. Alert Identity & Directory Services Team",
+      "action": "NOTIFY_SOC",
+      "target": "#ad-security-ops",
+      "parameters": {
+        "urgency": "HIGH",
+        "message": "Kerberoasting attack detected from {{host}}. Initiate krbtgt password rotation sequence."
+      },
+      "abort_on_failure": false
+    }
+  ]
+}

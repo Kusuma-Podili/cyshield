@@ -1,0 +1,58 @@
+{
+  "id": "PB-RANSOMWARE-01",
+  "name": "Ransomware Automated Rapid Containment",
+  "description": "High-urgency emergency containment workflow triggered by anomalous encryption spikes, ransomware notes, or shadow copy deletion.",
+  "trigger_criteria": {
+    "severity": "CRITICAL",
+    "mitre_technique": "T1486"
+  },
+  "steps": [
+    {
+      "name": "1. Isolate Infected Host from Subnet",
+      "action": "ISOLATE_HOST",
+      "target": "{{host}}",
+      "parameters": {
+        "reason": "Ransomware activity detected. Preventing lateral propagation."
+      },
+      "abort_on_failure": false
+    },
+    {
+      "name": "2. Forcibly Terminate Malicious Process",
+      "action": "KILL_PROCESS",
+      "target": "vssadmin.exe",
+      "parameters": {
+        "signal": "SIGKILL"
+      },
+      "abort_on_failure": false
+    },
+    {
+      "name": "3. Block Threat Actor Command & Control IP",
+      "action": "BLOCK_IP",
+      "target": "{{source_ip}}",
+      "parameters": {
+        "direction": "INGRESS_AND_EGRESS",
+        "ttl": 604800
+      },
+      "abort_on_failure": false
+    },
+    {
+      "name": "4. Collect Sealed Forensic Memory Dump",
+      "action": "CAPTURE_FORENSIC_SNAPSHOT",
+      "target": "{{host}}",
+      "parameters": {
+        "forensic_profile": "Full_Physical_Memory"
+      },
+      "abort_on_failure": false
+    },
+    {
+      "name": "5. Dispatch Emergency Alert to SOC Incident Commanders",
+      "action": "NOTIFY_SOC",
+      "target": "#soc-incident-response",
+      "parameters": {
+        "urgency": "CRITICAL",
+        "message": "AUTOMATED CONTAINMENT EXECUTED: Host {{host}} isolated due to active ransomware indicator."
+      },
+      "abort_on_failure": false
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "id": "PB-BRUTEFORCE-02",
+  "name": "Distributed Brute-Force & Credential Stuffing Mitigation",
+  "description": "Defensive workflow triggered upon repeated authentication failures or password spraying campaigns.",
+  "trigger_criteria": {
+    "severity": "HIGH",
+    "mitre_technique": "T1110"
+  },
+  "steps": [
+    {
+      "name": "1. Block Attacking Scanner IP at Perimeter",
+      "action": "BLOCK_IP",
+      "target": "{{source_ip}}",
+      "parameters": {
+        "direction": "INGRESS",
+        "ttl": 86400
+      },
+      "abort_on_failure": false
+    },
+    {
+      "name": "2. Temporarily Lock Targeted User Account",
+      "action": "REVOKE_USER_CREDENTIALS",
+      "target": "{{user}}",
+      "parameters": {
+        "lockout_minutes": 60,
+        "require_mfa_reset": true
+      },
+      "abort_on_failure": false
+    },
+    {
+      "name": "3. Dispatch Notification to Identity & Access Team",
+      "action": "NOTIFY_SOC",
+      "target": "#iam-operations",
+      "parameters": {
+        "urgency": "HIGH",
+        "message": "Credential spraying mitigated: IP {{source_ip}} blocked, user {{user}} locked out."
+      },
+      "abort_on_failure": false
+    }
+  ]
+}

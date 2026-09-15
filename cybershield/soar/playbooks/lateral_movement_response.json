@@ -1,0 +1,48 @@
+{
+  "id": "PB-LATERAL-04",
+  "name": "Internal Lateral Movement & Pass-the-Hash Containment",
+  "description": "Rapid response workflow triggered by suspicious SMB/RPC connections or Mimikatz LSASS access.",
+  "trigger_criteria": {
+    "severity": "HIGH",
+    "mitre_technique": "T1021"
+  },
+  "steps": [
+    {
+      "name": "1. Isolate Pivot Host from Corporate Subnet",
+      "action": "ISOLATE_HOST",
+      "target": "{{host}}",
+      "parameters": {
+        "reason": "Host exhibiting unauthorized lateral propagation behavior."
+      },
+      "abort_on_failure": false
+    },
+    {
+      "name": "2. Kill Active Remote Sessions and WMIC / PowerShell PIDs",
+      "action": "KILL_PROCESS",
+      "target": "powershell.exe",
+      "parameters": {
+        "signal": "SIGKILL"
+      },
+      "abort_on_failure": false
+    },
+    {
+      "name": "3. Revoke Compromised Kerberos Ticket & Account",
+      "action": "REVOKE_USER_CREDENTIALS",
+      "target": "{{user}}",
+      "parameters": {
+        "force_krbtgt_invalidation": true
+      },
+      "abort_on_failure": false
+    },
+    {
+      "name": "4. Broadcast Alert to SOC Incident Response Room",
+      "action": "NOTIFY_SOC",
+      "target": "#soc-tier2-incident-response",
+      "parameters": {
+        "urgency": "HIGH",
+        "message": "Lateral Movement Contained: Host {{host}} isolated, user {{user}} locked."
+      },
+      "abort_on_failure": false
+    }
+  ]
+}

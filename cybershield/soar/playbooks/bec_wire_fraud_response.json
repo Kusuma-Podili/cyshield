@@ -1,0 +1,56 @@
+{
+  "id": "PB-BEC-FRAUD-01",
+  "name": "Business Email Compromise (BEC) Urgent Defense",
+  "description": "Autonomous containment triggered by VIP mailbox compromise, unauthorized mail-forwarding rules, or banking fraud wire attempts.",
+  "trigger_criteria": {
+    "severity": "CRITICAL",
+    "mitre_technique": "T1114"
+  },
+  "steps": [
+    {
+      "name": "1. Invalidate All Active Sessions and Revoke OAuth Tokens",
+      "action": "REVOKE_USER_CREDENTIALS",
+      "target": "{{user}}",
+      "parameters": {
+        "reason": "Suspected executive account takeover / BEC activity."
+      },
+      "abort_on_failure": false
+    },
+    {
+      "name": "2. Disable Active Directory and Exchange Mailbox Access",
+      "action": "DISABLE_AD_ACCOUNT",
+      "target": "{{user}}",
+      "parameters": {},
+      "abort_on_failure": false
+    },
+    {
+      "name": "3. Block Attacker Phishing / C2 IP Address",
+      "action": "BLOCK_IP",
+      "target": "{{source_ip}}",
+      "parameters": {
+        "direction": "INGRESS_AND_EGRESS",
+        "ttl": 1209600
+      },
+      "abort_on_failure": false
+    },
+    {
+      "name": "4. Route Adversary Exfiltration Domain to Sinkhole",
+      "action": "SINKHOLE_DOMAIN",
+      "target": "wire-transfer-secure-portal.com",
+      "parameters": {
+        "sinkhole_ip": "127.0.0.1"
+      },
+      "abort_on_failure": false
+    },
+    {
+      "name": "5. Emergency Broadcast to Financial Controller and Legal",
+      "action": "NOTIFY_SOC",
+      "target": "#fraud-prevention-urgent",
+      "parameters": {
+        "urgency": "CRITICAL",
+        "message": "URGENT FRAUD ALERT: Executive account {{user}} hijacked. Verify all pending wires immediately!"
+      },
+      "abort_on_failure": false
+    }
+  ]
+}
