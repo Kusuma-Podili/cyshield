@@ -1,0 +1,129 @@
+version: '3.8'
+
+services:
+  # ============================================================================
+  # CyberShield Enterprise API & Web Console
+  # ============================================================================
+  cybershield-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: cybershield-enterprise:latest
+    container_name: cybershield-api
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - APP_ENV=production
+      - PORT=8000
+      - DATABASE_URL=postgresql+asyncpg://cybershield:SecureShield2026!@postgres:5432/cybershield_db
+      - REDIS_URL=redis://redis:6379/0
+      - SECRET_KEY=enterprise_super_secret_master_key_for_production_jwt_signing_2026
+      - ALGORITHM=HS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES=480
+    volumes:
+      - cybershield-data:/app/data
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - cybershield-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 20s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+  # ============================================================================
+  # High-Throughput Background Task Worker
+  # ============================================================================
+  cybershield-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: cybershield-enterprise:latest
+    container_name: cybershield-worker
+    restart: unless-stopped
+    command: ["python", "-m", "cybershield.cli", "status"]
+    environment:
+      - APP_ENV=production
+      - DATABASE_URL=postgresql+asyncpg://cybershield:SecureShield2026!@postgres:5432/cybershield_db
+      - REDIS_URL=redis://redis:6379/0
+    volumes:
+      - cybershield-data:/app/data
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - cybershield-net
+
+  # ============================================================================
+  # Enterprise PostgreSQL Relational Database
+  # ============================================================================
+  postgres:
+    image: postgres:16-alpine
+    container_name: cybershield-postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=cybershield
+      - POSTGRES_PASSWORD=SecureShield2026!
+      - POSTGRES_DB=cybershield_db
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - cybershield-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cybershield -d cybershield_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ============================================================================
+  # Distributed In-Memory Cache & Message Broker
+  # ============================================================================
+  redis:
+    image: redis:7-alpine
+    container_name: cybershield-redis
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis-data:/data
+    networks:
+      - cybershield-net
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  # ============================================================================
+  # Nginx Enterprise Reverse Proxy & SSL Termination
+  # ============================================================================
+  reverse-proxy:
+    image: nginx:alpine
+    container_name: cybershield-proxy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - cybershield-api
+    networks:
+      - cybershield-net
+
+networks:
+  cybershield-net:
+    driver: bridge
+
+volumes:
+  cybershield-data:
+  postgres-data:
+  redis-data:
