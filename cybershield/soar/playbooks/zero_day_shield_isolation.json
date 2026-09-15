@@ -1,0 +1,58 @@
+{
+  "id": "PB-ZERODAY-01",
+  "name": "Zero-Day Exploit Autonomous Quarantine Shield",
+  "description": "Aggressive containment playbook triggered by unclassified RCE attempts, anomalous memory corruption, or novel web gateway exploits.",
+  "trigger_criteria": {
+    "severity": "CRITICAL",
+    "mitre_technique": "T1190"
+  },
+  "steps": [
+    {
+      "name": "1. Immediately Isolate Compromised System from Network",
+      "action": "ISOLATE_HOST",
+      "target": "{{host}}",
+      "parameters": {
+        "reason": "Potential zero-day exploitation activity detected."
+      },
+      "abort_on_failure": false
+    },
+    {
+      "name": "2. Capture Volatile RAM Snapshot for Forensic Analysis",
+      "action": "CAPTURE_FORENSIC_SNAPSHOT",
+      "target": "{{host}}",
+      "parameters": {
+        "forensic_profile": "Full_Physical_Memory"
+      },
+      "abort_on_failure": false
+    },
+    {
+      "name": "3. Block Ingress Attack Traffic Vector",
+      "action": "BLOCK_IP",
+      "target": "{{source_ip}}",
+      "parameters": {
+        "direction": "INGRESS",
+        "ttl": 2592000
+      },
+      "abort_on_failure": false
+    },
+    {
+      "name": "4. Arm Network Decoy Tripwires across Subnet",
+      "action": "TRIGGER_DECEPTION_TRIPWIRE",
+      "target": "{{host}}",
+      "parameters": {
+        "trap_type": "SSH_DECOY"
+      },
+      "abort_on_failure": false
+    },
+    {
+      "name": "5. Dispatch Priority 1 Alert to SIRT Command",
+      "action": "NOTIFY_SOC",
+      "target": "#security-incident-response",
+      "parameters": {
+        "urgency": "CRITICAL",
+        "message": "P1 ZERO-DAY INCIDENT: Host {{host}} isolated under zero-day defense protocol. Forensic image acquired."
+      },
+      "abort_on_failure": false
+    }
+  ]
+}

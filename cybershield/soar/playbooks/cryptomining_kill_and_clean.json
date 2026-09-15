@@ -1,0 +1,56 @@
+{
+  "id": "PB-MINER-KILL-01",
+  "name": "CWPP Container Cryptominer Kill & Purge",
+  "description": "Rapid response playbook triggered by CPU/GPU cryptominers, stratum mining protocols, or illegal binary execution from /dev/shm.",
+  "trigger_criteria": {
+    "severity": "CRITICAL",
+    "mitre_technique": "T1496"
+  },
+  "steps": [
+    {
+      "name": "1. Forcibly Terminate Mining Daemon Process",
+      "action": "KILL_PROCESS",
+      "target": "xmrig",
+      "parameters": {
+        "signal": "SIGKILL"
+      },
+      "abort_on_failure": false
+    },
+    {
+      "name": "2. Quarantine Staged Mining Payload",
+      "action": "QUARANTINE_FILE",
+      "target": "/dev/shm/xmrig",
+      "parameters": {},
+      "abort_on_failure": false
+    },
+    {
+      "name": "3. Block Mining Pool IP / Port at Egress Boundary",
+      "action": "BLOCK_IP",
+      "target": "{{destination_ip}}",
+      "parameters": {
+        "direction": "EGRESS",
+        "ttl": 604800
+      },
+      "abort_on_failure": false
+    },
+    {
+      "name": "4. Revert Workload Node to Clean Golden State",
+      "action": "REVERT_VM_SNAPSHOT",
+      "target": "{{host}}",
+      "parameters": {
+        "snapshot": "clean_workload_baseline"
+      },
+      "abort_on_failure": false
+    },
+    {
+      "name": "5. Notify DevSecOps of Container Hijacking",
+      "action": "NOTIFY_SOC",
+      "target": "#devsecops-alerts",
+      "parameters": {
+        "urgency": "HIGH",
+        "message": "Cryptomining killed on host {{host}}. Image inspected for supply-chain backdoors."
+      },
+      "abort_on_failure": false
+    }
+  ]
+}

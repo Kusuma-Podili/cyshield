@@ -1,0 +1,48 @@
+{
+  "id": "PB-EXFIL-03",
+  "name": "High-Volume Data Exfiltration Interception",
+  "description": "Counter-exfiltration workflow triggered by statistical byte transfer spikes or unauthorized cloud uploads.",
+  "trigger_criteria": {
+    "severity": "CRITICAL",
+    "mitre_technique": "T1048"
+  },
+  "steps": [
+    {
+      "name": "1. Sever Outbound Connection to Destination Exfil IP",
+      "action": "BLOCK_IP",
+      "target": "{{dest_ip}}",
+      "parameters": {
+        "direction": "EGRESS",
+        "ttl": 259200
+      },
+      "abort_on_failure": false
+    },
+    {
+      "name": "2. Quarantine Staging Host",
+      "action": "ISOLATE_HOST",
+      "target": "{{host}}",
+      "parameters": {
+        "reason": "Suspected data exfiltration staging system."
+      },
+      "abort_on_failure": false
+    },
+    {
+      "name": "3. Capture Volatile Network Socket Table & Forensics",
+      "action": "CAPTURE_FORENSIC_SNAPSHOT",
+      "target": "{{host}}",
+      "parameters": {
+        "forensic_profile": "Network_Sockets_And_DLP"
+      },
+      "abort_on_failure": false
+    },
+    {
+      "name": "4. Revoke Active User Tokens",
+      "action": "REVOKE_USER_CREDENTIALS",
+      "target": "{{user}}",
+      "parameters": {
+        "reason": "Potential insider threat or hijacked session."
+      },
+      "abort_on_failure": false
+    }
+  ]
+}
