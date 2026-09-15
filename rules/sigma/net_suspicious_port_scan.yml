@@ -1,0 +1,22 @@
+title: Suspicious Internal Network Connection to Admin Ports
+id: 9a8b7c6d-5e4f-3a2b-1c0d-9e8f7a6b5c4d
+status: production
+description: Detects lateral SMB, RDP, or WinRM network connections originating from non-administrative endpoints.
+author: CyberShield Threat Labs
+level: medium
+tags:
+  - attack.lateral_movement
+  - attack.t1021.002
+logsource:
+  category: network
+  product: windows
+detection:
+  selection:
+    destination_port:
+      - 445
+      - 3389
+      - 5985
+      - 5986
+  condition: selection
+falsepositives:
+  - Legitimate remote administration by designated sysadmins

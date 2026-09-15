@@ -1,0 +1,26 @@
+title: Suspicious PowerShell Web Download Execution
+id: 3b3e2b2a-8c8c-4a3e-9c2b-1a2b3c4d5e6f
+status: production
+description: Detects suspicious PowerShell commands executing web downloads or memory reflection cradles (Net.WebClient, DownloadString, Invoke-WebRequest).
+author: CyberShield Threat Labs
+level: high
+tags:
+  - attack.execution
+  - attack.t1059.001
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|endswith:
+      - 'powershell.exe'
+      - 'pwsh.exe'
+    CommandLine|contains:
+      - 'DownloadString'
+      - 'Net.WebClient'
+      - 'Invoke-WebRequest'
+      - 'curl.exe'
+      - 'IEX'
+  condition: selection
+falsepositives:
+  - Legitimate automated administrative deployment scripts

@@ -1,0 +1,30 @@
+title: LSASS Memory Dumping via Diagnostic Tools
+id: 5c8a3f12-0b1e-4d5a-9a3c-7e8f1b2c3d4e
+status: production
+description: Detects dumping of LSASS memory process using comsvcs.dll, ProcDump, or rundll32 to extract plaintext credentials or hashes.
+author: CyberShield Threat Labs
+level: critical
+tags:
+  - attack.credential_access
+  - attack.t1003.001
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_comsvcs:
+    Image|endswith:
+      - 'rundll32.exe'
+    CommandLine|contains:
+      - 'comsvcs.dll'
+      - '#24'
+      - 'MiniDump'
+  selection_procdump:
+    Image|endswith:
+      - 'procdump.exe'
+      - 'procdump64.exe'
+    CommandLine|contains:
+      - 'lsass'
+      - '-ma'
+  condition: selection_comsvcs or selection_procdump
+falsepositives:
+  - Rare enterprise IT diagnostics by authorized system administrators

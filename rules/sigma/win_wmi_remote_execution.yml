@@ -1,0 +1,25 @@
+title: Remote Process Creation via WMI
+id: e46c1d90-8d9a-2f3c-7c1e-5a6b9d0e1f2a
+status: production
+description: Detects process creation spawned by Windows Management Instrumentation (WMI) service (WmiPrvSE.exe) indicating remote execution.
+author: CyberShield Threat Labs
+level: medium
+tags:
+  - attack.execution
+  - attack.t1047
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    ParentImage|endswith:
+      - 'WmiPrvSE.exe'
+    Image|endswith:
+      - 'cmd.exe'
+      - 'powershell.exe'
+      - 'mshta.exe'
+      - 'cscript.exe'
+      - 'wscript.exe'
+  condition: selection
+falsepositives:
+  - System management agents triggering health checks via WMI

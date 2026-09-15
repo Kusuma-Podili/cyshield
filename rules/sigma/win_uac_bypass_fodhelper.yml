@@ -1,0 +1,25 @@
+title: UAC Bypass via Fodhelper Registry Hijack
+id: b13f8a67-5a6d-9c0f-4f8b-2d3e6a7b8c9d
+status: production
+description: Detects modification of registry keys under ms-settings or exefile hijacked by Fodhelper.exe to execute high integrity commands without UAC prompt.
+author: CyberShield Threat Labs
+level: high
+tags:
+  - attack.privilege_escalation
+  - attack.defense_evasion
+  - attack.t1548.002
+logsource:
+  category: registry_set
+  product: windows
+detection:
+  selection:
+    TargetObject|contains:
+      - 'Software\Classes\ms-settings\shell\open\command'
+      - 'Software\Classes\mscfile\shell\open\command'
+    Details|contains:
+      - '.exe'
+      - 'cmd'
+      - 'powershell'
+  condition: selection
+falsepositives:
+  - None expected in legitimate environments

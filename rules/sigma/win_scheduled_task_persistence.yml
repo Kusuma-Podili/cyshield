@@ -1,0 +1,31 @@
+title: Suspicious Scheduled Task Creation via Schtasks
+id: c24a9b78-6b7e-0d1a-5a9c-3e4f7b8c9d0e
+status: production
+description: Detects scheduled tasks created via schtasks.exe pointing to temporary directories, scripting engines, or remote web resources.
+author: CyberShield Threat Labs
+level: medium
+tags:
+  - attack.persistence
+  - attack.execution
+  - attack.t1053.005
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|endswith:
+      - 'schtasks.exe'
+    CommandLine|contains:
+      - '/create'
+  selection_suspicious:
+    CommandLine|contains:
+      - 'AppData'
+      - 'Temp'
+      - 'powershell'
+      - 'cmd.exe'
+      - 'wscript'
+      - 'cscript'
+      - 'regsvr32'
+  condition: selection and selection_suspicious
+falsepositives:
+  - Software deployment orchestrators installing updates into temporary directories

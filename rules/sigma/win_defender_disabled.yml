@@ -1,0 +1,26 @@
+title: Windows Defender Real-Time Protection Disabled via PowerShell
+id: 8e0c5d34-2d3a-6f7c-1c5e-9a0b3d4e5f6a
+status: production
+description: Detects modification of Windows Defender antivirus preferences to disable real-time monitoring, behavior monitoring, or script scanning.
+author: CyberShield Threat Labs
+level: high
+tags:
+  - attack.defense_evasion
+  - attack.t1562.001
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|endswith:
+      - 'powershell.exe'
+      - 'pwsh.exe'
+    CommandLine|contains:
+      - 'Set-MpPreference'
+      - 'DisableRealtimeMonitoring $true'
+      - 'DisableBehaviorMonitoring $true'
+      - 'DisableScriptScanning $true'
+      - 'DisableIntrusionPreventionSystem $true'
+  condition: selection
+falsepositives:
+  - None expected in hardened enterprise environments
