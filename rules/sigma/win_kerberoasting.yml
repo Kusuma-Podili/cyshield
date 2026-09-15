@@ -1,0 +1,22 @@
+title: Kerberoasting Ticket Request Activity
+id: 9f1d6e45-3e4b-7a8d-2d6f-0b1c4e5f6a7b
+status: production
+description: Detects suspicious Kerberos Service Ticket requests (TGS-REQ) utilizing weak RC4 encryption (Ticket Encryption Type 0x17) characteristic of Kerberoasting attacks.
+author: CyberShield Threat Labs
+level: high
+tags:
+  - attack.credential_access
+  - attack.t1558.003
+logsource:
+  product: windows
+  service: security
+detection:
+  selection:
+    EventID: 4769
+    TicketEncryptionType: '0x17'
+    TicketOptions|contains: '0x40810000'
+  filter_machine_accounts:
+    ServiceName|endswith: '$'
+  condition: selection and not filter_machine_accounts
+falsepositives:
+  - Legacy enterprise applications requiring RC4-HMAC authentication

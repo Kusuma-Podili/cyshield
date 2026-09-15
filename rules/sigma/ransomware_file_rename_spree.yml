@@ -1,0 +1,26 @@
+title: Ransomware Shadow Copy Deletion and Inhibit System Recovery
+id: e7a9c8b7-1a2b-3c4d-5e6f-7a8b9c0d1e2f
+status: production
+description: Detects invocation of vssadmin or wmic used by ransomware actors to purge Windows Volume Shadow Copies before encrypting disks.
+author: CyberShield Threat Labs
+level: critical
+tags:
+  - attack.impact
+  - attack.t1490
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|endswith:
+      - 'vssadmin.exe'
+      - 'wmic.exe'
+      - 'wbadmin.exe'
+    CommandLine|contains:
+      - 'delete shadows'
+      - 'shadowcopy delete'
+      - 'delete catalog -quiet'
+      - 'resize shadowstorage'
+  condition: selection
+falsepositives:
+  - Rare storage maintenance operations performed during system migrations

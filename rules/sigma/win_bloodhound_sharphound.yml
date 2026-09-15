@@ -1,0 +1,27 @@
+title: Active Directory Reconnaissance via SharpHound / BloodHound
+id: f57d2e01-9e0b-3a4d-8d2f-6b7c0e1f2a3b
+status: production
+description: Detects execution of SharpHound Active Directory reconnaissance collector generating domain trust, session, and group membership graphs.
+author: CyberShield Threat Labs
+level: high
+tags:
+  - attack.discovery
+  - attack.t1087.002
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_img:
+    Image|endswith:
+      - 'SharpHound.exe'
+      - 'BloodHound.exe'
+  selection_cli:
+    CommandLine|contains:
+      - 'CollectionMethods'
+      - 'All,GPOLocalGroup'
+      - 'DCOnly'
+      - 'Stealth'
+      - '--collectionmethods'
+  condition: selection_img or selection_cli
+falsepositives:
+  - Authorized internal security audit or red team engagement

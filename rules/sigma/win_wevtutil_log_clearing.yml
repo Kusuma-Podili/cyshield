@@ -1,0 +1,23 @@
+title: Windows Event Log Tampering via Wevtutil
+id: 7d9b4c23-1c2f-5e6b-0b4d-8f9a2c3d4e5f
+status: production
+description: Detects clearing or disabling of Windows Security, System, or Application event logs using wevtutil command line utility.
+author: CyberShield Threat Labs
+level: high
+tags:
+  - attack.defense_evasion
+  - attack.t1070.001
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|endswith:
+      - 'wevtutil.exe'
+    CommandLine|contains:
+      - ' cl '
+      - 'clear-log'
+      - 'sl /e:false'
+  condition: selection
+falsepositives:
+  - Rare automated system maintenance scripts during image provisioning

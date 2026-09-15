@@ -1,0 +1,31 @@
+title: Interactive Linux Reverse Shell Spawned
+id: 28a05b34-2b3e-6d7a-1a5c-9e0f3b4c5d6e
+status: production
+description: Detects command line invocations constructing interactive reverse shells redirecting stdin/stdout over TCP sockets (bash, netcat, python, socat).
+author: CyberShield Threat Labs
+level: critical
+tags:
+  - attack.execution
+  - attack.t1059.004
+logsource:
+  category: process_creation
+  product: linux
+detection:
+  selection_bash:
+    CommandLine|contains:
+      - '/dev/tcp/'
+      - 'bash -i >& /dev/tcp/'
+      - '0>&1'
+  selection_netcat:
+    CommandLine|contains:
+      - 'nc -e /bin/sh'
+      - 'nc -e /bin/bash'
+      - 'ncat -e'
+  selection_python:
+    CommandLine|contains:
+      - 'socket.socket'
+      - 'pty.spawn("/bin/bash")'
+      - 'os.dup2('
+  condition: selection_bash or selection_netcat or selection_python
+falsepositives:
+  - Rare network administrative troubleshooting scripts

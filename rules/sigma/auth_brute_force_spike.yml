@@ -1,0 +1,20 @@
+title: Suspicious Repeated Authentication Failures
+id: c8d7e6f5-4a3b-2c1d-0e9f-8a7b6c5d4e3f
+status: production
+description: Detects logon failure events (EventID 4625) associated with dictionary attacks or credential stuffing against Active Directory.
+author: CyberShield Threat Labs
+level: high
+tags:
+  - attack.credential_access
+  - attack.t1110
+logsource:
+  category: identity
+  product: windows
+detection:
+  selection:
+    event_action|contains:
+      - 'Failed Logon Attempt'
+      - 'EventID_4625'
+  condition: selection
+falsepositives:
+  - Misconfigured service accounts with expired passwords

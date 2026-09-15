@@ -1,0 +1,25 @@
+title: Linux Sudoers Privilege Escalation Tampering
+id: 068e3f12-0f1c-4b5e-9e3a-7c8d1f2a3b4c
+status: production
+description: "Detects unauthorized append or modification of /etc/sudoers or /etc/sudoers.d/ granting passwordless root access (NOPASSWD: ALL)."
+author: CyberShield Threat Labs
+level: critical
+tags:
+  - attack.privilege_escalation
+  - attack.t1548.003
+logsource:
+  category: process_creation
+  product: linux
+detection:
+  selection:
+    CommandLine|contains:
+      - '/etc/sudoers'
+      - '/etc/sudoers.d/'
+  selection_nopasswd:
+    CommandLine|contains:
+      - 'NOPASSWD'
+      - 'ALL=(ALL'
+      - 'visudo'
+  condition: selection and selection_nopasswd
+falsepositives:
+  - Rare enterprise automation deploying standard administrative privileges

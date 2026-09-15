@@ -1,0 +1,26 @@
+title: Apache Log4j JNDI Lookup Remote Code Execution (Log4Shell)
+id: 39b16c45-3c4f-7e8b-2b6d-0f1a4c5d6e7f
+status: production
+description: Detects exploitation attempts of Apache Log4j (CVE-2021-44228) via JNDI LDAP, RMI, DNS, or IIOP lookup string patterns in HTTP requests or logs.
+author: CyberShield Threat Labs
+level: critical
+tags:
+  - attack.initial_access
+  - attack.execution
+  - attack.t1190
+logsource:
+  category: web_access
+  product: generic
+detection:
+  selection:
+    HttpPayload|contains:
+      - '${jndi:ldap://'
+      - '${jndi:rmi://'
+      - '${jndi:dns://'
+      - '${jndi:iiop://'
+      - '${jndi:ldaps://'
+      - '${lower:j}ndi:'
+      - '${upper:j}ndi:'
+  condition: selection
+falsepositives:
+  - Vulnerability scanner probes from authorized internal security scanners

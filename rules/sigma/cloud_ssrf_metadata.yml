@@ -1,0 +1,26 @@
+title: Cloud Instance Metadata Service SSRF Exploitation
+id: 4ac27d56-4d5a-8f9c-3c7e-1a2b5d6e7f8a
+status: production
+description: Detects Server-Side Request Forgery (SSRF) attempts querying AWS EC2, GCP, or Azure Instance Metadata Service (169.254.169.254) to extract temporary IAM tokens.
+author: CyberShield Threat Labs
+level: high
+tags:
+  - attack.credential_access
+  - attack.t1552
+logsource:
+  category: web_access
+  product: generic
+detection:
+  selection:
+    HttpUrl|contains:
+      - '169.254.169.254'
+      - 'metadata.google.internal'
+      - 'fd00:ec2::254'
+  selection_sensitive:
+    HttpUrl|contains:
+      - 'iam/security-credentials'
+      - 'computeMetadata/v1'
+      - 'identity/oauth2/token'
+  condition: selection and selection_sensitive
+falsepositives:
+  - Legitimate local cloud daemons (AWS SSM Agent, Cloud-Init)

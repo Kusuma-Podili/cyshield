@@ -1,0 +1,31 @@
+title: Linux Cron Scheduled Job Persistence
+id: 179f4a23-1a2d-5c6f-0f4b-8d9e2a3b4c5d
+status: production
+description: Detects creation or modification of cron scheduled jobs in /etc/cron.* or /var/spool/cron used to establish persistence.
+author: CyberShield Threat Labs
+level: medium
+tags:
+  - attack.persistence
+  - attack.t1053.003
+logsource:
+  category: process_creation
+  product: linux
+detection:
+  selection:
+    CommandLine|contains:
+      - '/etc/cron.d/'
+      - '/etc/cron.daily/'
+      - '/etc/cron.hourly/'
+      - '/etc/crontab'
+      - '/var/spool/cron/'
+      - 'crontab -e'
+  selection_suspicious:
+    CommandLine|contains:
+      - 'curl'
+      - 'wget'
+      - '/dev/tcp/'
+      - 'sh -i'
+      - 'python'
+  condition: selection and selection_suspicious
+falsepositives:
+  - Legitimate package managers updating cron scripts

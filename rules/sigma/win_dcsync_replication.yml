@@ -1,0 +1,23 @@
+title: Active Directory DCSync Replication Rights Abuse
+id: a02e7f56-4f5c-8b9e-3e7a-1c2d5f6a7b8c
+status: production
+description: Detects replication of Active Directory domain credentials by non-domain controller accounts utilizing Directory Replication Service (DRS) rights.
+author: CyberShield Threat Labs
+level: critical
+tags:
+  - attack.credential_access
+  - attack.t1003.006
+logsource:
+  product: windows
+  service: security
+detection:
+  selection:
+    EventID: 4662
+    Properties|contains:
+      - '{1131f6aa-9c07-11d1-f79f-00c04fc2dcd2}'  # DS-Replication-Get-Changes
+      - '{1131f6ad-9c07-11d1-f79f-00c04fc2dcd2}'  # DS-Replication-Get-Changes-All
+  filter_dc:
+    SubjectUserName|endswith: '$'
+  condition: selection and not filter_dc
+falsepositives:
+  - Authorized Domain Controller sync operations
